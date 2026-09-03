@@ -176,7 +176,48 @@
 
 <script>
 
-function signup(event) {
+async function signup(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+    const message = document.getElementById("message");
+
+    if (password !== confirmPassword) {
+        message.textContent = "Passwords do not match.";
+        return;
+    }
+
+    try {
+
+        const userCredential =
+            await window.createUserWithEmailAndPassword(
+                window.mchatsAuth,
+                email,
+                password
+            );
+
+        const user = userCredential.user;
+
+        message.textContent =
+            "Account created successfully!";
+
+        setTimeout(function () {
+            window.location.href = "index.html";
+        }, 1000);
+
+    } catch (error) {
+
+        message.textContent =
+            error.message;
+
+    }
+}
 
     event.preventDefault();
 
