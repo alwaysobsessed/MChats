@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MChats - Chat</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #efeae2;
+        }
+
+        .app {
+            max-width: 500px;
+            height: 100vh;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #075e54;
+            color: white;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back {
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-info h3 {
+            font-size: 17px;
+        }
+
+        .user-info p {
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 9px 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .sent {
+            margin-left: auto;
+            background: #dcf8c6;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            background: #f0f0f0;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .input-area button {
+            width: 50px;
+            border: none;
+            border-radius: 50%;
+            background: #075e54;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+
+        <div class="back" onclick="goBack()">‹</div>
+
+        <div class="avatar">👤</div>
+
+        <div class="user-info">
+            <h3>Alex</h3>
+            <p>online</p>
+        </div>
+
+    </div>
+
+    <div class="messages" id="messages">
+
+        <div class="message">
+            Hello! 👋
+        </div>
+
+        <div class="message sent">
+            Hi Alex!
+        </div>
+
+    </div>
+
+    <div class="input-area">
+
+        <input
+            type="text"
+            id="messageInput"
+            placeholder="Type a message..."
+            onkeydown="handleEnter(event)"
+        >
+
+        <button onclick="sendMessage()">➤</button>
+
+    </div>
+
+</div>
+
+<script>
+
+function sendMessage() {
+
+    const input = document.getElementById("messageInput");
+    const text = input.value.trim();
+
+    if (text === "") {
+        return;
+    }
+
+    const message = document.createElement("div");
+
+    message.className = "message sent";
+    message.textContent = text;
+
+    document.getElementById("messages").appendChild(message);
+
+    input.value = "";
+
+    const messages = document.getElementById("messages");
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function handleEnter(event) {
+
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+}
+
+function goBack() {
+    window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>
