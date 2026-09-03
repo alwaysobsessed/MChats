@@ -13,7 +13,29 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import {
+        getAuth,
+        createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPWKvTDJFNismRcNkfgJ-s2UwzNAQI4KY",
+        authDomain: "mchats-39fc5.firebaseapp.com",
+        projectId: "mchats-39fc5",
+        storageBucket: "mchats-39fc5.firebasestorage.app",
+        messagingSenderId: "946457566474",
+        appId: "1:946457566474:web:e317336ac862d6a622aef3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.mchatsAuth = auth;
+    window.createUserWithEmailAndPassword =
+        createUserWithEmailAndPassword;
+</script>
         body {
             min-height: 100vh;
             background: #f0f2f5;
