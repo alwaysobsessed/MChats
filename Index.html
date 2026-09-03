@@ -13,11 +13,7 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-<script>
-function openChat() {
-    window.location.href = "chat.html";
-}
-</script>
+
         body {
             background: #f0f2f5;
         }
@@ -34,16 +30,25 @@ function openChat() {
             color: white;
             padding: 18px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
             font-size: 24px;
         }
 
-        .icons {
-            font-size: 22px;
+        .search {
+            padding: 12px;
+            background: #f0f2f5;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
         }
 
         .tabs {
@@ -58,13 +63,51 @@ function openChat() {
             font-weight: bold;
         }
 
-        .chat {
-            display: flex;
-            align-items: center;
-            padding: 14px;
-            border-bottom: 1px solid #eeeeee;
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #777;
         }
 
+        .empty h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <h1>MChats</h1>
+        <div>⋮</div>
+    </div>
+
+    <div class="tabs">
+        <div>CHATS</div>
+        <div>STATUS</div>
+        <div>CALLS</div>
+    </div>
+
+    <div class="search">
+        <input
+            type="text"
+            placeholder="Search users..."
+            id="searchInput"
+        >
+    </div>
+
+    <div class="empty">
+        <h2>No chats yet</h2>
+        <p>Search for a user to start chatting.</p>
+    </div>
+
+</div>
+
+</body>
+</html>
         .avatar {
             width: 50px;
             height: 50px;
