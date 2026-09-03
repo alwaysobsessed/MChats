@@ -13,7 +13,11 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-
+<script>
+function openChat() {
+    window.location.href = "chat.html";
+}
+</script>
         body {
             background: #f0f2f5;
         }
@@ -108,7 +112,8 @@
             <div>CALLS</div>
         </div>
 
-        <div class="chat">
+        <div class="chat" 
+            onclick="openChat()">
             <div class="avatar">👤</div>
 
             <div class="chat-info">
