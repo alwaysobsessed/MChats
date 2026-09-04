@@ -42,7 +42,6 @@
       justify-content: center;
       font-size: 35px;
       font-weight: bold;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
     h1 {
@@ -52,13 +51,22 @@
 
     p {
       margin-top: 10px;
-      opacity: 0.9;
       line-height: 1.5;
     }
 
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 12px;
+      outline: none;
+      font-size: 15px;
+    }
+
     button {
-      margin-top: 25px;
-      padding: 14px 35px;
+      margin-top: 15px;
+      padding: 14px 25px;
       border: none;
       border-radius: 30px;
       background: white;
@@ -68,34 +76,189 @@
       cursor: pointer;
     }
 
-    button:active {
-      transform: scale(0.96);
+    .secondary {
+      background: transparent;
+      color: white;
+      border: 1px solid white;
+      margin-left: 5px;
     }
 
     .status {
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 14px;
-      opacity: 0.8;
+    }
+
+    #authBox,
+    #userBox {
+      margin-top: 25px;
     }
   </style></head><body>  <div class="container"><div class="logo">M</div>
 
 <h1>MChats</h1>
 
-<p>
+<p id="welcome">
   Simple, fast and friendly chatting.
-  Connect with your friends on MChats.
 </p>
 
-<button onclick="startChat()">Get Started</button>
+<div id="authBox">
+
+  <input
+    type="email"
+    id="email"
+    placeholder="Email"
+    autocomplete="email"
+  >
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Password"
+    autocomplete="current-password"
+  >
+
+  <button onclick="signUp()">Sign Up</button>
+  <button class="secondary" onclick="login()">Login</button>
+
+</div>
+
+<div id="userBox" style="display:none;">
+
+  <p id="userEmail"></p>
+
+  <button onclick="logout()">Logout</button>
+
+</div>
 
 <div class="status" id="status">
   MChats is ready 🚀
 </div>
 
-  </div>  <script>
-    function startChat() {
-      document.getElementById("status").innerText =
-        "Chat system coming soon 🚀";
-    }
+  </div>  <script type="module">
+
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPWKvTDJFNismRcNkfgJ-s2UwzNAQI4KY",
+      authDomain: "mchats-39fc5.firebaseapp.com",
+      projectId: "mchats-39fc5",
+      storageBucket: "mchats-39fc5.firebasestorage.app",
+      messagingSenderId: "946457566474",
+      appId: "1:946457566474:web:e317336ac862d6a622aef3",
+      measurementId: "G-H92Q4PD5CB"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const status = document.getElementById("status");
+
+    window.signUp = async function () {
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        status.innerText = "Please enter email and password.";
+        return;
+      }
+
+      try {
+
+        await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        status.innerText = "Account created successfully! 🎉";
+
+      } catch (error) {
+
+        status.innerText = error.message;
+
+      }
+    };
+
+    window.login = async function () {
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        status.innerText = "Please enter email and password.";
+        return;
+      }
+
+      try {
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        status.innerText = "Login successful! 🚀";
+
+      } catch (error) {
+
+        status.innerText = error.message;
+
+      }
+    };
+
+    window.logout = async function () {
+
+      try {
+
+        await signOut(auth);
+
+        status.innerText = "Logged out successfully.";
+
+      } catch (error) {
+
+        status.innerText = error.message;
+
+      }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+
+      const authBox = document.getElementById("authBox");
+      const userBox = document.getElementById("userBox");
+      const userEmail = document.getElementById("userEmail");
+
+      if (user) {
+
+        authBox.style.display = "none";
+        userBox.style.display = "block";
+
+        userEmail.innerText =
+          "Logged in as: " + user.email;
+
+        document.getElementById("welcome").innerText =
+          "Welcome to MChats! 💬";
+
+      } else {
+
+        authBox.style.display = "block";
+        userBox.style.display = "none";
+
+        document.getElementById("welcome").innerText =
+          "Simple, fast and friendly chatting.";
+
+      }
+
+    });
+
   </script></body>
 </html>
