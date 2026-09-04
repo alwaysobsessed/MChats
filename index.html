@@ -1,8 +1,11 @@
-DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MChats</title>  <style>
+  <title>MChats</title>
+
+  <style>
     * {
       box-sizing: border-box;
       margin: 0;
@@ -13,17 +16,16 @@ DOCTYPE html><html lang="en">
     body {
       min-height: 100vh;
       background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: white;
+      padding: 20px;
     }
 
     .container {
-      width: 90%;
-      max-width: 420px;
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
       text-align: center;
-      padding: 35px 25px;
+      padding: 25px;
       border-radius: 25px;
       background: rgba(255,255,255,0.15);
       backdrop-filter: blur(15px);
@@ -31,27 +33,22 @@ DOCTYPE html><html lang="en">
     }
 
     .logo {
-      width: 85px;
-      height: 85px;
+      width: 70px;
+      height: 70px;
       margin: auto;
-      border-radius: 25px;
+      border-radius: 20px;
       background: white;
       color: #667eea;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 35px;
+      font-size: 30px;
       font-weight: bold;
     }
 
     h1 {
-      margin-top: 20px;
-      font-size: 38px;
-    }
-
-    p {
-      margin-top: 10px;
-      line-height: 1.5;
+      margin-top: 15px;
+      font-size: 34px;
     }
 
     input {
@@ -66,9 +63,9 @@ DOCTYPE html><html lang="en">
 
     button {
       margin-top: 15px;
-      padding: 14px 25px;
+      padding: 13px 22px;
       border: none;
-      border-radius: 30px;
+      border-radius: 25px;
       background: white;
       color: #667eea;
       font-size: 16px;
@@ -83,182 +80,354 @@ DOCTYPE html><html lang="en">
       margin-left: 5px;
     }
 
-    .status {
-      margin-top: 18px;
+    #chatBox {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #messages {
+      height: 350px;
+      overflow-y: auto;
+      background: rgba(0,0,0,0.15);
+      border-radius: 15px;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .message {
+      background: white;
+      color: #333;
+      padding: 10px 13px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      word-wrap: break-word;
+    }
+
+    .sender {
+      font-size: 11px;
+      color: #667eea;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .sendArea {
+      display: flex;
+      gap: 8px;
+    }
+
+    .sendArea input {
+      flex: 1;
+    }
+
+    .sendArea button {
+      width: 90px;
+    }
+
+    #status {
+      margin-top: 15px;
       font-size: 14px;
     }
+  </style>
+</head>
 
-    #authBox,
-    #userBox {
-      margin-top: 25px;
+<body>
+
+<div class="container">
+
+  <div class="logo">M</div>
+
+  <h1>MChats</h1>
+
+  <p id="welcome">Simple, fast and friendly chatting.</p>
+
+  <!-- LOGIN / SIGN UP -->
+
+  <div id="authBox">
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Email"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
+
+    <button onclick="signUp()">Sign Up</button>
+    <button class="secondary" onclick="login()">Login</button>
+
+  </div>
+
+  <!-- LOGGED IN -->
+
+  <div id="userBox" style="display:none;">
+
+    <p id="userEmail"></p>
+
+    <button onclick="logout()">Logout</button>
+
+  </div>
+
+  <!-- CHAT -->
+
+  <div id="chatBox">
+
+    <div id="messages">
+      <p>Loading messages...</p>
+    </div>
+
+    <div class="sendArea">
+
+      <input
+        type="text"
+        id="messageInput"
+        placeholder="Type a message..."
+      >
+
+      <button onclick="sendMessage()">Send</button>
+
+    </div>
+
+  </div>
+
+  <div id="status">
+    MChats is ready 🚀
+  </div>
+
+</div>
+
+
+<script type="module">
+
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    onSnapshot,
+    serverTimestamp
+  } from
+    "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+
+    apiKey: "AIzaSyDPWKvTDJFNismRcNkfgJ-s2UwzNAQI4KY",
+
+    authDomain: "mchats-39fc5.firebaseapp.com",
+
+    projectId: "mchats-39fc5",
+
+    storageBucket: "mchats-39fc5.firebasestorage.app",
+
+    messagingSenderId: "946457566474",
+
+    appId: "1:946457566474:web:e317336ac862d6a622aef3",
+
+    measurementId: "G-H92Q4PD5CB"
+
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+  const db = getFirestore(app);
+
+  const status = document.getElementById("status");
+
+
+  // SIGN UP
+
+  window.signUp = async function() {
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+
+    if (!email || !password) {
+
+      status.innerText =
+        "Please enter email and password.";
+
+      return;
+
     }
-  </style></head><body>  <div class="container"><div class="logo">M</div>
 
-<h1>MChats</h1>
 
-<p id="welcome">
-  Simple, fast and friendly chatting.
-</p>
+    try {
 
-<div id="authBox">
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-  <input
-    type="email"
-    id="email"
-    placeholder="Email"
-    autocomplete="email"
-  >
+      status.innerText =
+        "Account created successfully! 🎉";
 
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-    autocomplete="current-password"
-  >
+    }
 
-  <button onclick="signUp()">Sign Up</button>
-  <button class="secondary" onclick="login()">Login</button>
+    catch(error) {
 
-</div>
+      status.innerText =
+        error.message;
 
-<div id="userBox" style="display:none;">
+    }
 
-  <p id="userEmail"></p>
+  };
 
-  <button onclick="logout()">Logout</button>
 
-</div>
+  // LOGIN
 
-<div class="status" id="status">
-  MChats is ready 🚀
-</div>
+  window.login = async function() {
 
-  </div>  <script type="module">
+    const email =
+      document.getElementById("email").value.trim();
 
-    import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    const password =
+      document.getElementById("password").value;
 
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut
-    } from
-      "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDPWKvTDJFNismRcNkfgJ-s2UwzNAQI4KY",
-      authDomain: "mchats-39fc5.firebaseapp.com",
-      projectId: "mchats-39fc5",
-      storageBucket: "mchats-39fc5.firebasestorage.app",
-      messagingSenderId: "946457566474",
-      appId: "1:946457566474:web:e317336ac862d6a622aef3",
-      measurementId: "G-H92Q4PD5CB"
-    };
+    if (!email || !password) {
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+      status.innerText =
+        "Please enter email and password.";
 
-    const status = document.getElementById("status");
+      return;
 
-    window.signUp = async function () {
+    }
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
 
-      if (!email || !password) {
-        status.innerText = "Please enter email and password.";
-        return;
-      }
+    try {
 
-      try {
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-        await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+      status.innerText =
+        "Login successful! 🚀";
 
-        status.innerText = "Account created successfully! 🎉";
+    }
 
-      } catch (error) {
+    catch(error) {
 
-        status.innerText = error.message;
+      status.innerText =
+        error.message;
 
-      }
-    };
+    }
 
-    window.login = async function () {
+  };
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
 
-      if (!email || !password) {
-        status.innerText = "Please enter email and password.";
-        return;
-      }
+  // LOGOUT
 
-      try {
+  window.logout = async function() {
 
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+    try {
 
-        status.innerText = "Login successful! 🚀";
+      await signOut(auth);
 
-      } catch (error) {
+      status.innerText =
+        "Logged out successfully.";
 
-        status.innerText = error.message;
+    }
 
-      }
-    };
+    catch(error) {
 
-    window.logout = async function () {
+      status.innerText =
+        error.message;
 
-      try {
+    }
 
-        await signOut(auth);
+  };
 
-        status.innerText = "Logged out successfully.";
 
-      } catch (error) {
+  // SEND MESSAGE
 
-        status.innerText = error.message;
+  window.sendMessage = async function() {
 
-      }
-    };
+    const input =
+      document.getElementById("messageInput");
 
-    onAuthStateChanged(auth, (user) => {
+    const text =
+      input.value.trim();
 
-      const authBox = document.getElementById("authBox");
-      const userBox = document.getElementById("userBox");
-      const userEmail = document.getElementById("userEmail");
+    const user =
+      auth.currentUser;
 
-      if (user) {
 
-        authBox.style.display = "none";
-        userBox.style.display = "block";
+    if (!user) {
 
-        userEmail.innerText =
-          "Logged in as: " + user.email;
+      status.innerText =
+        "Please login first.";
 
-        document.getElementById("welcome").innerText =
-          "Welcome to MChats! 💬";
+      return;
 
-      } else {
+    }
 
-        authBox.style.display = "block";
-        userBox.style.display = "none";
 
-        document.getElementById("welcome").innerText =
-          "Simple, fast and friendly chatting.";
+    if (!text) return;
 
-      }
 
-    });
+    try {
 
-  </script></body>
-</html>
+      await addDoc(
+        collection(db, "chats"),
+        {
+
+          senderId: user.uid,
+
+          senderEmail: user.email,
+
+          text: text,
+
+          createdAt: serverTimestamp()
+
+        }
+      );
+
+
+      input.value = "";
+
+      status.innerText =
+        "Message sent ✅";
+
+    }
+
+    catch(error) {
+
+      status.innerText =
+        error.message;
+
+    }
+
+  };
+
+
+  // ENTER KEY TO SEND
+
+  document
+   
