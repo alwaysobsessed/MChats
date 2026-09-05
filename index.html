@@ -1,528 +1,1002 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MChats</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-  <style>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>MChats</title>
+
+
+<style>
+
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
     }
+
 
     body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 20px;
+
+        min-height: 100vh;
+
+        background:
+            linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            );
+
+        color: white;
+
+        padding: 20px;
+
     }
+
 
     .container {
-      width: 100%;
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
-      padding: 25px;
-      border-radius: 25px;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(15px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+
+        width: 100%;
+
+        max-width: 600px;
+
+        margin: auto;
+
+        text-align: center;
+
+        padding: 25px;
+
+        border-radius: 25px;
+
+        background:
+            rgba(255,255,255,0.15);
+
+        backdrop-filter: blur(15px);
+
+        box-shadow:
+            0 15px 40px
+            rgba(0,0,0,0.25);
+
     }
+
 
     .logo {
-      width: 70px;
-      height: 70px;
-      margin: auto;
-      border-radius: 20px;
-      background: white;
-      color: #667eea;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      font-weight: bold;
+
+        width: 70px;
+
+        height: 70px;
+
+        margin: auto;
+
+        border-radius: 20px;
+
+        background: white;
+
+        color: #667eea;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 30px;
+
+        font-weight: bold;
+
     }
+
 
     h1 {
-      margin-top: 15px;
-      font-size: 34px;
+
+        margin-top: 15px;
+
+        font-size: 34px;
+
     }
+
+
+    #welcome {
+
+        margin-top: 5px;
+
+    }
+
 
     input {
-      width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      border: none;
-      border-radius: 12px;
-      outline: none;
-      font-size: 15px;
+
+        width: 100%;
+
+        padding: 14px;
+
+        margin-top: 12px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        outline: none;
+
+        font-size: 15px;
+
     }
+
 
     button {
-      margin-top: 15px;
-      padding: 13px 22px;
-      border: none;
-      border-radius: 25px;
-      background: white;
-      color: #667eea;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
+
+        margin-top: 15px;
+
+        padding: 13px 22px;
+
+        border: none;
+
+        border-radius: 25px;
+
+        background: white;
+
+        color: #667eea;
+
+        font-size: 16px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
     }
+
+
+    button:disabled {
+
+        opacity: 0.6;
+
+        cursor: not-allowed;
+
+    }
+
 
     .secondary {
-      background: transparent;
-      color: white;
-      border: 1px solid white;
-      margin-left: 5px;
+
+        background: transparent;
+
+        color: white;
+
+        border: 1px solid white;
+
+        margin-left: 5px;
+
     }
+
+
+    #userBox {
+
+        margin-top: 20px;
+
+    }
+
+
+    #userEmail {
+
+        margin-bottom: 5px;
+
+        word-break: break-word;
+
+    }
+
 
     #chatBox {
-      display: none;
-      margin-top: 20px;
+
+        display: none;
+
+        margin-top: 20px;
+
     }
+
 
     #messages {
-      height: 350px;
-      overflow-y: auto;
-      background: rgba(0,0,0,0.15);
-      border-radius: 15px;
-      padding: 12px;
-      text-align: left;
+
+        height: 350px;
+
+        overflow-y: auto;
+
+        background:
+            rgba(0,0,0,0.15);
+
+        border-radius: 15px;
+
+        padding: 12px;
+
+        text-align: left;
+
     }
+
 
     .message {
-      background: white;
-      color: #333;
-      padding: 10px 13px;
-      border-radius: 15px;
-      margin-bottom: 10px;
-      word-wrap: break-word;
+
+        background: white;
+
+        color: #333;
+
+        padding: 10px 13px;
+
+        border-radius: 15px;
+
+        margin-bottom: 10px;
+
+        word-wrap: break-word;
+
     }
+
 
     .sender {
-      font-size: 11px;
-      color: #667eea;
-      font-weight: bold;
-      margin-bottom: 4px;
+
+        font-size: 11px;
+
+        color: #667eea;
+
+        font-weight: bold;
+
+        margin-bottom: 4px;
+
     }
+
 
     .sendArea {
-      display: flex;
-      gap: 8px;
+
+        display: flex;
+
+        gap: 8px;
+
     }
+
 
     .sendArea input {
-      flex: 1;
+
+        flex: 1;
+
     }
+
 
     .sendArea button {
-      width: 90px;
+
+        width: 90px;
+
     }
+
 
     #status {
-      margin-top: 15px;
-      font-size: 14px;
+
+        margin-top: 15px;
+
+        font-size: 14px;
+
+        word-break: break-word;
+
     }
-  </style>
-</head>
 
-<body>
+</style>
 
-<div class="container">
+</head><body><div class="container"><div class="logo">
+    M
+</div>
 
-  <div class="logo">M</div>
 
-  <h1>MChats</h1>
+<h1>
+    MChats
+</h1>
 
-  <p id="welcome">Simple, fast and friendly chatting.</p>
 
-  <!-- LOGIN / SIGN UP -->
+<p id="welcome">
+    Simple, fast and friendly chatting.
+</p>
 
-  <div id="authBox">
+
+<!-- LOGIN -->
+
+<div id="authBox">
+
 
     <input
-      type="email"
-      id="email"
-      placeholder="Email"
+        type="email"
+        id="email"
+        placeholder="Email"
+        autocomplete="email"
     >
+
 
     <input
-      type="password"
-      id="password"
-      placeholder="Password"
+        type="password"
+        id="password"
+        placeholder="Password"
+        autocomplete="current-password"
     >
 
-    <button id="signupBtn">Sign Up</button>
-    <button class="secondary" id="loginBtn">Login</button>
 
-  </div>
+    <button id="loginBtn">
+        Login
+    </button>
 
-  <!-- USER -->
 
-  <div id="userBox" style="display:none;">
+    <button
+        class="secondary"
+        id="signupBtn"
+    >
+        Sign Up
+    </button>
 
-    <p id="userEmail"></p>
-
-    <button id="logoutBtn">Logout</button>
-
-  </div>
-
-  <!-- CHAT -->
-
-  <div id="chatBox">
-
-    <div id="messages">
-      <p>Loading messages...</p>
-    </div>
-
-    <div class="sendArea">
-
-      <input
-        type="text"
-        id="messageInput"
-        placeholder="Type a message..."
-      >
-
-      <button id="sendBtn">Send</button>
-
-    </div>
-
-  </div>
-
-  <div id="status">
-    MChats is ready 🚀
-  </div>
 
 </div>
 
 
-<script type="module">
+<!-- LOGGED IN USER -->
 
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+<div
+    id="userBox"
+    style="display:none;"
+>
 
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    <p id="userName"></p>
 
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    query,
-    orderBy,
-    onSnapshot,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    <p id="userEmail"></p>
 
 
-  // FIREBASE CONFIG
+    <button id="logoutBtn">
+        Logout
+    </button>
 
-  const firebaseConfig = {
+</div>
 
-    apiKey: "AIzaSyDPWKvTDJFNismRcNkfgJ-s2UwzNAQI4KY",
 
-    authDomain: "mchats-39fc5.firebaseapp.com",
+<!-- CHAT -->
 
-    projectId: "mchats-39fc5",
+<div id="chatBox">
 
-    storageBucket: "mchats-39fc5.firebasestorage.app",
 
-    messagingSenderId: "946457566474",
+    <div id="messages">
 
-    appId: "1:946457566474:web:e317336ac862d6a622aef3",
+        <p>
+            Loading messages...
+        </p>
 
-    measurementId: "G-H92Q4PD5CB"
+    </div>
 
-  };
 
+    <div class="sendArea">
 
-  // INITIALIZE FIREBASE
 
-  const app = initializeApp(firebaseConfig);
+        <input
+            type="text"
+            id="messageInput"
+            placeholder="Type a message..."
+            maxlength="1000"
+        >
 
-  const auth = getAuth(app);
 
-  const db = getFirestore(app);
+        <button id="sendBtn">
+            Send
+        </button>
 
 
-  // ELEMENTS
+    </div>
 
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
 
-  const authBox = document.getElementById("authBox");
-  const userBox = document.getElementById("userBox");
-  const chatBox = document.getElementById("chatBox");
+</div>
 
-  const userEmail = document.getElementById("userEmail");
 
-  const status = document.getElementById("status");
+<div id="status">
+    MChats is ready 🚀
+</div>
 
-  const messages = document.getElementById("messages");
+</div><script type="module">
 
-  const messageInput = document.getElementById("messageInput");
 
+    // FIREBASE APP
 
-  // SIGN UP
+    import {
+        initializeApp
+    } from
+    "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-  document.getElementById("signupBtn").addEventListener("click", async () => {
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    // FIREBASE AUTH
 
-    if (!email || !password) {
+    import {
+        getAuth,
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+        signOut
+    } from
+    "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-      status.innerText = "Please enter email and password.";
 
-      return;
-    }
+    // FIRESTORE
 
-    try {
+    import {
+        getFirestore,
+        collection,
+        addDoc,
+        query,
+        orderBy,
+        onSnapshot,
+        serverTimestamp
+    } from
+    "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
 
-      status.innerText = "Account created successfully! 🎉";
 
-    } catch (error) {
+    // FIREBASE CONFIG
 
-      console.error(error);
+    const firebaseConfig = {
 
-      status.innerText = error.message;
+        apiKey:
+        "AIzaSyDPWKvTDJFNismRcNkfgJ-s2UwzNAQI4KY",
 
-    }
+        authDomain:
+        "mchats-39fc5.firebaseapp.com",
 
-  });
+        projectId:
+        "mchats-39fc5",
 
+        storageBucket:
+        "mchats-39fc5.firebasestorage.app",
 
-  // LOGIN
+        messagingSenderId:
+        "946457566474",
 
-  document.getElementById("loginBtn").addEventListener("click", async () => {
+        appId:
+        "1:946457566474:web:e317336ac862d6a622aef3"
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    };
 
-    if (!email || !password) {
 
-      status.innerText = "Please enter email and password.";
 
-      return;
-    }
+    // INITIALIZE
 
-    status.innerText = "Logging in...";
+    const app =
+        initializeApp(firebaseConfig);
 
-    try {
 
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+    const auth =
+        getAuth(app);
 
-      status.innerText = "Login successful! 🚀";
 
-    } catch (error) {
+    const db =
+        getFirestore(app);
 
-      console.error(error);
 
-      status.innerText = error.message;
 
-    }
+    // ELEMENTS
 
-  });
+    const emailInput =
+        document.getElementById("email");
 
 
-  // LOGOUT
+    const passwordInput =
+        document.getElementById("password");
 
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
 
-    try {
+    const authBox =
+        document.getElementById("authBox");
 
-      await signOut(auth);
 
-      status.innerText = "Logged out successfully.";
+    const userBox =
+        document.getElementById("userBox");
 
-    } catch (error) {
 
-      status.innerText = error.message;
+    const chatBox =
+        document.getElementById("chatBox");
 
-    }
 
-  });
+    const userName =
+        document.getElementById("userName");
 
 
-  // AUTH STATE
+    const userEmail =
+        document.getElementById("userEmail");
 
-  onAuthStateChanged(auth, (user) => {
 
-    if (user) {
+    const messageInput =
+        document.getElementById("messageInput");
 
-      authBox.style.display = "none";
 
-      userBox.style.display = "block";
+    const messages =
+        document.getElementById("messages");
 
-      chatBox.style.display = "block";
 
-      userEmail.innerText =
-        "Logged in as: " + user.email;
+    const status =
+        document.getElementById("status");
 
-      status.innerText =
-        "Welcome to MChats! 🚀";
 
-      loadMessages();
+    const loginBtn =
+        document.getElementById("loginBtn");
 
-    } else {
 
-      authBox.style.display = "block";
+    const signupBtn =
+        document.getElementById("signupBtn");
 
-      userBox.style.display = "none";
 
-      chatBox.style.display = "none";
+    const logoutBtn =
+        document.getElementById("logoutBtn");
 
-    }
 
-  });
+    const sendBtn =
+        document.getElementById("sendBtn");
 
 
-  // SEND MESSAGE
 
-  document.getElementById("sendBtn").addEventListener("click", sendMessage);
+    // LOGIN
 
+    loginBtn.addEventListener(
+        "click",
+        async () => {
 
-  messageInput.addEventListener("keydown", (event) => {
 
-    if (event.key === "Enter") {
+            const email =
+                emailInput.value.trim();
 
-      sendMessage();
 
-    }
+            const password =
+                passwordInput.value;
 
-  });
 
+            if (!email || !password) {
 
-  async function sendMessage() {
+                status.innerText =
+                    "Please enter email and password.";
 
-    const text = messageInput.value.trim();
+                return;
 
-    const user = auth.currentUser;
+            }
 
-    if (!user) {
 
-      status.innerText = "Please login first.";
+            loginBtn.disabled = true;
 
-      return;
+            loginBtn.innerText =
+                "Logging in...";
 
-    }
 
-    if (!text) return;
+            try {
 
-    try {
 
-      await addDoc(
-        collection(db, "chats"),
-        {
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
 
-          senderId: user.uid,
 
-          senderEmail: user.email,
+                status.innerText =
+                    "Login successful! 🚀";
 
-          text: text,
 
-          createdAt: serverTimestamp()
+            }
+
+
+            catch (error) {
+
+
+                console.error(error);
+
+
+                if (
+                    error.code ===
+                    "auth/invalid-credential"
+                ) {
+
+                    status.innerText =
+                        "Incorrect email or password.";
+
+                }
+
+                else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    status.innerText =
+                        "Please enter a valid email.";
+
+                }
+
+                else {
+
+                    status.innerText =
+                        error.message;
+
+                }
+
+            }
+
+
+            finally {
+
+                loginBtn.disabled = false;
+
+                loginBtn.innerText =
+                    "Login";
+
+            }
 
         }
-      );
+    );
 
-      messageInput.value = "";
 
-      status.innerText = "Message sent ✅";
 
-    } catch (error) {
+    // GO TO SIGN UP
 
-      console.error(error);
+    signupBtn.addEventListener(
+        "click",
+        () => {
 
-      status.innerText = error.message;
+            window.location.href =
+                "signup.html";
+
+        }
+    );
+
+
+
+    // LOGOUT
+
+    logoutBtn.addEventListener(
+        "click",
+        async () => {
+
+
+            try {
+
+                await signOut(auth);
+
+                status.innerText =
+                    "Logged out successfully.";
+
+            }
+
+            catch (error) {
+
+                status.innerText =
+                    error.message;
+
+            }
+
+        }
+    );
+
+
+
+    // AUTH STATE
+
+    onAuthStateChanged(
+        auth,
+        (user) => {
+
+
+            if (user) {
+
+
+                // HIDE LOGIN
+
+                authBox.style.display =
+                    "none";
+
+
+                // SHOW USER
+
+                userBox.style.display =
+                    "block";
+
+
+                // SHOW CHAT
+
+                chatBox.style.display =
+                    "block";
+
+
+                userName.innerText =
+                    "Welcome, " +
+                    (user.displayName || "User") +
+                    " 👋";
+
+
+                userEmail.innerText =
+                    "Logged in as: " +
+                    user.email;
+
+
+                status.innerText =
+                    "Welcome to MChats! 🚀";
+
+
+                loadMessages();
+
+
+            }
+
+            else {
+
+
+                // SHOW LOGIN
+
+                authBox.style.display =
+                    "block";
+
+
+                // HIDE USER
+
+                userBox.style.display =
+                    "none";
+
+
+                // HIDE CHAT
+
+                chatBox.style.display =
+                    "none";
+
+
+                userName.innerText =
+                    "";
+
+
+                userEmail.innerText =
+                    "";
+
+
+            }
+
+        }
+    );
+
+
+
+    // SEND MESSAGE
+
+    sendBtn.addEventListener(
+        "click",
+        sendMessage
+    );
+
+
+
+    messageInput.addEventListener(
+        "keydown",
+        (event) => {
+
+
+            if (event.key === "Enter") {
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+
+
+    async function sendMessage() {
+
+
+        const text =
+            messageInput.value.trim();
+
+
+        const user =
+            auth.currentUser;
+
+
+        if (!user) {
+
+            status.innerText =
+                "Please login first.";
+
+            return;
+
+        }
+
+
+        if (!text) {
+
+            return;
+
+        }
+
+
+        sendBtn.disabled = true;
+
+
+        try {
+
+
+            await addDoc(
+                collection(
+                    db,
+                    "chats"
+                ),
+                {
+
+                    senderId:
+                        user.uid,
+
+                    senderEmail:
+                        user.email,
+
+                    senderName:
+                        user.displayName ||
+                        "User",
+
+                    text:
+                        text,
+
+                    createdAt:
+                        serverTimestamp()
+
+                }
+            );
+
+
+            messageInput.value = "";
+
+
+            status.innerText =
+                "Message sent ✅";
+
+
+        }
+
+        catch (error) {
+
+
+            console.error(error);
+
+
+            status.innerText =
+                error.message;
+
+        }
+
+
+        finally {
+
+            sendBtn.disabled = false;
+
+        }
 
     }
 
-  }
 
 
-  // LOAD MESSAGES
+    // LOAD MESSAGES
 
-  function loadMessages() {
-
-    const q = query(
-      collection(db, "chats"),
-      orderBy("createdAt", "asc")
-    );
-
-    onSnapshot(q, (snapshot) => {
-
-      messages.innerHTML = "";
-
-      snapshot.forEach((doc) => {
-
-        const data = doc.data();
-
-        const div = document.createElement("div");
-
-        div.className = "message";
-
-        div.innerHTML = `
-          <div class="sender">
-            ${escapeHTML(data.senderEmail || "User")}
-          </div>
-          <div>
-            ${escapeHTML(data.text || "")}
-          </div>
-        `;
-
-        messages.appendChild(div);
-
-      });
-
-      messages.scrollTop = messages.scrollHeight;
-
-    }, (error) => {
-
-      console.error(error);
-
-      messages.innerHTML =
-        "<p>Could not load messages.</p>";
-
-      status.innerText = error.message;
-
-    });
-
-  }
+    let unsubscribeMessages = null;
 
 
-  // SECURITY: PREVENT HTML IN MESSAGES
+    function loadMessages() {
 
-  function escapeHTML(text) {
 
-    const div = document.createElement("div");
+        if (unsubscribeMessages) {
 
-    div.textContent = text;
+            unsubscribeMessages();
 
-    return div.innerHTML;
+        }
 
-  }
 
-</script>
+        const q =
+            query(
+                collection(
+                    db,
+                    "chats"
+                ),
+                orderBy(
+                    "createdAt",
+                    "asc"
+                )
+            );
 
-</body>
-</html>
+
+        unsubscribeMessages =
+            onSnapshot(
+                q,
+
+                (snapshot) => {
+
+
+                    messages.innerHTML = "";
+
+
+                    if (snapshot.empty) {
+
+                        messages.innerHTML =
+                            "<p>No messages yet. Be the first! 👋</p>";
+
+                        return;
+
+                    }
+
+
+                    snapshot.forEach(
+                        (doc) => {
+
+
+                            const data =
+                                doc.data();
+
+
+                            const div =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            div.className =
+                                "message";
+
+
+                            const sender =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            sender.className =
+                                "sender";
+
+
+                            sender.textContent =
+                                data.senderName ||
+                                data.senderEmail ||
+                                "User";
+
+
+                            const text =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            text.textContent =
+                                data.text || "";
+
+
+                            div.appendChild(
+                                sender
+                            );
+
+
+                            div.appendChild(
+                                text
+                            );
+
+
+                            messages.appendChild(
+                                div
+                            );
+
+                        }
+                    );
+
+
+                    messages.scrollTop =
+                        messages.scrollHeight;
+
+                },
+
+                (error) => {
+
+
+                    console.error(error);
+
+
+                    messages.innerHTML =
+                        "<p>Could not load messages.</p>";
+
+
+                    status.innerText =
+                        error.message;
+
+                }
+            );
+
+    }
+
+</script></body></html>
